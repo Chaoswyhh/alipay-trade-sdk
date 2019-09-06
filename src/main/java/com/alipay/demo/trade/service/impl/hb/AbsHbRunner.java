@@ -4,71 +4,82 @@ import com.alipay.api.response.MonitorHeartbeatSynResponse;
 import com.alipay.demo.trade.config.Configs;
 import com.alipay.demo.trade.model.builder.AlipayHeartbeatSynRequestBuilder;
 import com.alipay.demo.trade.service.AlipayMonitorService;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Created by liuyangkly on 15/10/23.
+ */
 public abstract class AbsHbRunner implements Runnable {
-	
-	protected Log log = LogFactory.getLog(getClass());
+    protected Log log = LogFactory.getLog(getClass());
 
-	private ScheduledExecutorService scheduledService = Executors.newSingleThreadScheduledExecutor();
-	private AlipayMonitorService monitorService;
-	private long delay = 0L;
-	private long duration = 0L;
+    // 获取交易保障所需的信息
+    public abstract AlipayHeartbeatSynRequestBuilder getBuilder();
 
-	public abstract AlipayHeartbeatSynRequestBuilder getBuilder();
+    // 获取商户授权令牌，系统商通过此令牌帮助商户发起请求，完成业务
+    public abstract String getAppAuthToken();
 
-	public abstract String getAppAuthToken();
+    private ScheduledExecutorService scheduledService = Executors.newSingleThreadScheduledExecutor();
+    private AlipayMonitorService monitorService;
 
-	public AbsHbRunner(AlipayMonitorService monitorService) {
-		this.monitorService = monitorService;
-	}
+    private long delay = 0;
+    private long duration = 0;
 
-	public void run() {
-		AlipayHeartbeatSynRequestBuilder builder = getBuilder();
-		String appAuthToken = getAppAuthToken();
+    public AbsHbRunner(AlipayMonitorService monitorService) {
+        this.monitorService = monitorService;
+    }
 
-		MonitorHeartbeatSynResponse response = this.monitorService.heartbeatSyn(builder, appAuthToken);
+    
+    public void run() {
+        AlipayHeartbeatSynRequestBuilder builder = getBuilder();
+        builder.setAppAuthToken(getAppAuthToken());
 
-		StringBuilder sb = new StringBuilder(response.getCode()).append(":").append(response.getMsg());
-		if (StringUtils.isNotEmpty(response.getSubCode())) {
-			sb.append(", ").append(response.getSubCode()).append(":").append(response.getSubMsg());
-		}
-		this.log.info(sb.toString());
-	}
+        MonitorHeartbeatSynResponse response = monitorService.heartbeatSyn(builder);
 
-	public void schedule() {
-		if (this.delay == 0L) {
-			this.delay = Configs.getHeartbeatDelay();
-		}
-		if (this.duration == 0L) {
-			this.duration = Configs.getCancelDuration();
-		}
-		this.scheduledService.scheduleAtFixedRate(this, this.delay, this.duration, TimeUnit.SECONDS);
-	}
+        StringBuilder sb = new StringBuilder(response.getCode())
+                                .append(":")
+                                .append(response.getMsg());
+        if (StringUtils.isNotEmpty(response.getSubCode())) {
+            sb.append(", ")
+            .append(response.getSubCode())
+            .append(":")
+            .append(response.getSubMsg());
+        }
+        log.info(sb.toString());
+    }
 
-	public void shutdown() {
-		this.scheduledService.shutdown();
-	}
+    public void schedule() {
+        if (delay == 0) {
+            delay = Configs.getHeartbeatDelay();
+        }
+        if (duration == 0) {
+            duration = Configs.getCancelDuration();
+        }
+        scheduledService.scheduleAtFixedRate(this, delay, duration, TimeUnit.SECONDS);
+    }
 
-	public long getDelay() {
-		return this.delay;
-	}
+    public void shutdown() {
+        scheduledService.shutdown();
+    }
 
-	public void setDelay(long delay) {
-		this.delay = delay;
-	}
+    public long getDelay() {
+        return delay;
+    }
 
-	public long getDuration() {
-		return this.duration;
-	}
+    public void setDelay(long delay) {
+        this.delay = delay;
+    }
 
-	public void setDuration(long duration) {
-		this.duration = duration;
-	}
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
 }

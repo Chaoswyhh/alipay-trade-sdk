@@ -1,7 +1,12 @@
 package com.alipay.demo.trade.model.hb;
 
-public abstract interface TradeInfo {
-	public abstract HbStatus getStatus();
+/**
+ * Created by liuyangkly on 15/9/28.
+ */
+public interface TradeInfo {
+    // 获取交易状态
+    public HbStatus getStatus();
 
-	public abstract double getTimeConsume();
+    // 获取交易时间
+    public double getTimeConsume();
 }

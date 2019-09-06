@@ -2,49 +2,54 @@ package com.alipay.demo.trade.model.hb;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Created by liuyangkly on 15/8/27.
+ */
 public class SysTradeInfo implements TradeInfo {
+    @SerializedName("OTN")
+    private String outTradeNo;
 
-	@SerializedName("OTN")
-	private String outTradeNo;
+    @SerializedName("TC")
+    private double timeConsume;
 
-	@SerializedName("TC")
-	private double timeConsume;
+    @SerializedName("STAT")
+    private HbStatus status;
 
-	@SerializedName("STAT")
-	private HbStatus status;
+    private SysTradeInfo() {
+        // no public constructor.
+    }
 
-	public static SysTradeInfo newInstance(String outTradeNo, double timeConsume, HbStatus status) {
-		SysTradeInfo info = new SysTradeInfo();
-		info.setOutTradeNo(outTradeNo);
-		if ((timeConsume > 99.0D) || (timeConsume < 0.0D)) {
-			timeConsume = 99.0D;
-		}
-		info.setTimeConsume(timeConsume);
-		info.setStatus(status);
-		return info;
-	}
+    public static SysTradeInfo newInstance(String outTradeNo, double timeConsume, HbStatus status) {
+        SysTradeInfo info = new SysTradeInfo();
+        info.setOutTradeNo(outTradeNo);
+        if (timeConsume > 99 || timeConsume < 0) {
+            timeConsume = 99;
+        }
+        info.setTimeConsume(timeConsume);
+        info.setStatus(status);
+        return info;
+    }
 
-	public String getOutTradeNo() {
-		return this.outTradeNo;
-	}
+    public String getOutTradeNo() {
+        return outTradeNo;
+    }
 
-	public void setOutTradeNo(String outTradeNo) {
-		this.outTradeNo = outTradeNo;
-	}
+    public void setOutTradeNo(String outTradeNo) {
+        this.outTradeNo = outTradeNo;
+    }
+    public HbStatus getStatus() {
+        return status;
+    }
 
-	public HbStatus getStatus() {
-		return this.status;
-	}
+    public void setStatus(HbStatus status) {
+        this.status = status;
+    }
 
-	public void setStatus(HbStatus status) {
-		this.status = status;
-	}
+    public double getTimeConsume() {
+        return timeConsume;
+    }
 
-	public double getTimeConsume() {
-		return this.timeConsume;
-	}
-
-	public void setTimeConsume(double timeConsume) {
-		this.timeConsume = timeConsume;
-	}
+    public void setTimeConsume(double timeConsume) {
+        this.timeConsume = timeConsume;
+    }
 }

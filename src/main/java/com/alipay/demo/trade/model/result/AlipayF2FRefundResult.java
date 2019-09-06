@@ -3,32 +3,35 @@ package com.alipay.demo.trade.model.result;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.alipay.demo.trade.model.TradeStatus;
 
+/**
+ * Created by liuyangkly on 15/8/27.
+ */
 public class AlipayF2FRefundResult implements Result {
-	
-	private TradeStatus tradeStatus;
-	private AlipayTradeRefundResponse response;
+    private TradeStatus tradeStatus;
+    private AlipayTradeRefundResponse response;
 
-	public AlipayF2FRefundResult(AlipayTradeRefundResponse response) {
-		this.response = response;
-	}
+    public AlipayF2FRefundResult(AlipayTradeRefundResponse response) {
+        this.response = response;
+    }
 
-	public void setTradeStatus(TradeStatus tradeStatus) {
-		this.tradeStatus = tradeStatus;
-	}
+    public void setTradeStatus(TradeStatus tradeStatus) {
+        this.tradeStatus = tradeStatus;
+    }
 
-	public void setResponse(AlipayTradeRefundResponse response) {
-		this.response = response;
-	}
+    public void setResponse(AlipayTradeRefundResponse response) {
+        this.response = response;
+    }
 
-	public TradeStatus getTradeStatus() {
-		return this.tradeStatus;
-	}
+    public TradeStatus getTradeStatus() {
+        return tradeStatus;
+    }
 
-	public AlipayTradeRefundResponse getResponse() {
-		return this.response;
-	}
+    public AlipayTradeRefundResponse getResponse() {
+        return response;
+    }
 
-	public boolean isTradeSuccess() {
-		return (this.response != null) && (TradeStatus.SUCCESS.equals(this.tradeStatus));
-	}
+    public boolean isTradeSuccess() {
+        return response != null &&
+                TradeStatus.SUCCESS.equals(tradeStatus);
+    }
 }

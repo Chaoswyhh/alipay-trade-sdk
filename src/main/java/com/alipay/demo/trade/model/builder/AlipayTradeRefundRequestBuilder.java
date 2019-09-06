@@ -3,130 +3,170 @@ package com.alipay.demo.trade.model.builder;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * Created by liuyangkly on 16/3/3.
+ */
 public class AlipayTradeRefundRequestBuilder extends RequestBuilder {
+    private BizContent bizContent = new BizContent();
 
-	@SerializedName("trade_no")
-	private String tradeNo;
+    @Override
+    public BizContent getBizContent() {
+        return bizContent;
+    }
 
-	@SerializedName("out_trade_no")
-	private String outTradeNo;
+    @Override
+    public boolean validate() {
+        if (StringUtils.isEmpty(bizContent.outTradeNo) &&
+                StringUtils.isEmpty(bizContent.tradeNo)) {
+            throw new NullPointerException("out_trade_no and trade_no should not both be NULL!");
+        }
+        if (StringUtils.isEmpty(bizContent.refundAmount)) {
+            throw new NullPointerException("refund_amount should not be NULL!");
+        }
+        if (StringUtils.isEmpty(bizContent.refundReason)) {
+            throw new NullPointerException("refund_reson should not be NULL!");
+        }
+        return true;
+    }
 
-	@SerializedName("refund_amount")
-	private String refundAmount;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("AlipayTradeRefundRequestBuilder{");
+        sb.append("bizContent=").append(bizContent);
+        sb.append(", super=").append(super.toString());
+        sb.append('}');
+        return sb.toString();
+    }
 
-	@SerializedName("out_request_no")
-	private String outRequestNo;
+    @Override
+    public AlipayTradeRefundRequestBuilder setAppAuthToken(String appAuthToken) {
+        return (AlipayTradeRefundRequestBuilder) super.setAppAuthToken(appAuthToken);
+    }
 
-	@SerializedName("refund_reason")
-	private String refundReason;
+    @Override
+    public AlipayTradeRefundRequestBuilder setNotifyUrl(String notifyUrl) {
+        return (AlipayTradeRefundRequestBuilder) super.setNotifyUrl(notifyUrl);
+    }
 
-	@SerializedName("store_id")
-	private String storeId;
+    public String getOutTradeNo() {
+        return bizContent.outTradeNo;
+    }
 
-	@SerializedName("alipay_store_id")
-	private String alipayStoreId;
+    public AlipayTradeRefundRequestBuilder setOutTradeNo(String outTradeNo) {
+        bizContent.outTradeNo = outTradeNo;
+        return this;
+    }
 
-	@SerializedName("terminal_id")
-	private String terminalId;
+    public AlipayTradeRefundRequestBuilder setTradeNo(String tradeNo) {
+        bizContent.tradeNo = tradeNo;
+        return this;
+    }
 
-	public boolean validate() {
-		if ((StringUtils.isEmpty(this.tradeNo)) && (StringUtils.isEmpty(this.outTradeNo))) {
-			throw new NullPointerException("trade_no and out_trade_no should not both be NULL!");
-		}
-		if (StringUtils.isEmpty(this.refundAmount)) {
-			throw new NullPointerException("refund_amount should not be NULL!");
-		}
-		if (StringUtils.isEmpty(this.refundReason)) {
-			throw new NullPointerException("refund_reson should not be NULL!");
-		}
-		return true;
-	}
+    public AlipayTradeRefundRequestBuilder setRefundAmount(String refundAmount) {
+        bizContent.refundAmount = refundAmount;
+        return this;
+    }
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder("AlipayTradeRefundContentBuilder{");
-		sb.append("outTradeNo='").append(this.outTradeNo).append('\'');
-		if (StringUtils.isNotEmpty(this.tradeNo)) {
-			sb.append(", tradeNo='").append(this.tradeNo).append('\'');
-		}
-		sb.append(", refundAmount='").append(this.refundAmount).append('\'');
-		sb.append(", outRequestNo='").append(this.outRequestNo).append('\'');
-		sb.append(", refundReason='").append(this.refundReason).append('\'');
-		sb.append(", storeId='").append(this.storeId).append('\'');
-		sb.append(", alipayStoreId='").append(this.alipayStoreId).append('\'');
-		sb.append(", terminalId='").append(this.terminalId).append('\'');
-		sb.append('}');
-		return sb.toString();
-	}
+    public AlipayTradeRefundRequestBuilder setOutRequestNo(String outRequestNo) {
+        bizContent.outRequestNo = outRequestNo;
+        return this;
+    }
 
-	public String getOutTradeNo() {
-		return this.outTradeNo;
-	}
+    public AlipayTradeRefundRequestBuilder setRefundReason(String refundReason) {
+        bizContent.refundReason = refundReason;
+        return this;
+    }
 
-	public AlipayTradeRefundRequestBuilder setOutTradeNo(String outTradeNo) {
-		this.outTradeNo = outTradeNo;
-		return this;
-	}
+    public AlipayTradeRefundRequestBuilder setStoreId(String storeId) {
+        bizContent.storeId = storeId;
+        return this;
+    }
 
-	public AlipayTradeRefundRequestBuilder setTradeNo(String tradeNo) {
-		this.tradeNo = tradeNo;
-		return this;
-	}
+    public AlipayTradeRefundRequestBuilder setAlipayStoreId(String alipayStoreId) {
+        bizContent.alipayStoreId = alipayStoreId;
+        return this;
+    }
 
-	public AlipayTradeRefundRequestBuilder setRefundAmount(String refundAmount) {
-		this.refundAmount = refundAmount;
-		return this;
-	}
+    public AlipayTradeRefundRequestBuilder setTerminalId(String terminalId) {
+        bizContent.terminalId = terminalId;
+        return this;
+    }
 
-	public AlipayTradeRefundRequestBuilder setOutRequestNo(String outRequestNo) {
-		this.outRequestNo = outRequestNo;
-		return this;
-	}
+    public String getTradeNo() {
+        return bizContent.tradeNo;
+    }
 
-	public AlipayTradeRefundRequestBuilder setRefundReason(String refundReason) {
-		this.refundReason = refundReason;
-		return this;
-	}
+    public String getRefundAmount() {
+        return bizContent.refundAmount;
+    }
 
-	public AlipayTradeRefundRequestBuilder setStoreId(String storeId) {
-		this.storeId = storeId;
-		return this;
-	}
+    public String getOutRequestNo() {
+        return bizContent.outRequestNo;
+    }
 
-	public AlipayTradeRefundRequestBuilder setAlipayStoreId(String alipayStoreId) {
-		this.alipayStoreId = alipayStoreId;
-		return this;
-	}
+    public String getRefundReason() {
+        return bizContent.refundReason;
+    }
 
-	public AlipayTradeRefundRequestBuilder setTerminalId(String terminalId) {
-		this.terminalId = terminalId;
-		return this;
-	}
+    public String getStoreId() {
+        return bizContent.storeId;
+    }
 
-	public String getTradeNo() {
-		return this.tradeNo;
-	}
+    public String getAlipayStoreId() {
+        return bizContent.alipayStoreId;
+    }
 
-	public String getRefundAmount() {
-		return this.refundAmount;
-	}
+    public String getTerminalId() {
+        return bizContent.terminalId;
+    }
 
-	public String getOutRequestNo() {
-		return this.outRequestNo;
-	}
+    public static class BizContent {
+        // 支付宝交易号，当面付支付成功后支付宝会返回给商户系统。通过此支付宝交易号进行交易退款
+        @SerializedName("trade_no")
+        private String tradeNo;
 
-	public String getRefundReason() {
-		return this.refundReason;
-	}
+        // (推荐) 外部订单号，可通过外部订单号申请退款，推荐使用
+        @SerializedName("out_trade_no")
+        private String outTradeNo;
 
-	public String getStoreId() {
-		return this.storeId;
-	}
+        // 退款金额，该金额必须小于等于订单的支付金额，此处单位为元，精确到小数点后2位
+        @SerializedName("refund_amount")
+        private String refundAmount;
 
-	public String getAlipayStoreId() {
-		return this.alipayStoreId;
-	}
+        // (可选，需要支持重复退货时必填) 商户退款请求号，相同支付宝交易号下的不同退款请求号对应同一笔交易的不同退款申请，
+        // 对于相同支付宝交易号下多笔相同商户退款请求号的退款交易，支付宝只会进行一次退款
+        @SerializedName("out_request_no")
+        private String outRequestNo;
 
-	public String getTerminalId() {
-		return this.terminalId;
-	}
+        // (必填) 退款原因，可以说明用户退款原因，方便为商家后台提供统计
+        @SerializedName("refund_reason")
+        private String refundReason;
+
+        // (必填) 商户门店编号，退款情况下可以为商家后台提供退款权限判定和统计等作用，详询支付宝技术支持
+        @SerializedName("store_id")
+        private String storeId;
+
+        // 支付宝商家平台中配置的商户门店号，详询支付宝技术支持
+        @SerializedName("alipay_store_id")
+        private String alipayStoreId;
+
+        // 商户机具终端编号，当以机具方式接入支付宝时必传，详询支付宝技术支持
+        @SerializedName("terminal_id")
+        private String terminalId;
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("BizContent{");
+            sb.append("tradeNo='").append(tradeNo).append('\'');
+            sb.append(", outTradeNo='").append(outTradeNo).append('\'');
+            sb.append(", refundAmount='").append(refundAmount).append('\'');
+            sb.append(", outRequestNo='").append(outRequestNo).append('\'');
+            sb.append(", refundReason='").append(refundReason).append('\'');
+            sb.append(", storeId='").append(storeId).append('\'');
+            sb.append(", alipayStoreId='").append(alipayStoreId).append('\'');
+            sb.append(", terminalId='").append(terminalId).append('\'');
+            sb.append('}');
+            return sb.toString();
+        }
+    }
 }

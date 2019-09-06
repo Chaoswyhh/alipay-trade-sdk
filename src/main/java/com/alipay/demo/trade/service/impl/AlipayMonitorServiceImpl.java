@@ -7,122 +7,133 @@ import com.alipay.api.response.MonitorHeartbeatSynResponse;
 import com.alipay.demo.trade.config.Configs;
 import com.alipay.demo.trade.model.builder.AlipayHeartbeatSynRequestBuilder;
 import com.alipay.demo.trade.service.AlipayMonitorService;
-
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * Created by liuyangkly on 15/10/22.
+ */
 public class AlipayMonitorServiceImpl extends AbsAlipayService implements AlipayMonitorService {
-	
-	private AlipayClient client;
+    private AlipayClient client;
 
-	public AlipayMonitorServiceImpl(ClientBuilder builder) {
-		if (StringUtils.isEmpty(builder.getGatewayUrl())) {
-			throw new NullPointerException("gatewayUrl should not be NULL!");
-		}
-		if (StringUtils.isEmpty(builder.getAppid())) {
-			throw new NullPointerException("appid should not be NULL!");
-		}
-		if (StringUtils.isEmpty(builder.getPrivateKey())) {
-			throw new NullPointerException("privateKey should not be NULL!");
-		}
-		if (StringUtils.isEmpty(builder.getFormat())) {
-			throw new NullPointerException("format should not be NULL!");
-		}
-		if (StringUtils.isEmpty(builder.getCharset())) {
-			throw new NullPointerException("charset should not be NULL!");
-		}
+    public static class ClientBuilder {
+        private String gatewayUrl;
+        private String appid;
+        private String privateKey;
+        private String format;
+        private String charset;
+        private String signType;
 
-		this.client = new DefaultAlipayClient(builder.getGatewayUrl(), builder.getAppid(), builder.getPrivateKey(),
-				builder.getFormat(), builder.getCharset());
-	}
+        public AlipayMonitorServiceImpl build() {
+            if (StringUtils.isEmpty(gatewayUrl)) {
+                gatewayUrl = Configs.getMcloudApiDomain(); // 与openapi网关地址不同
+            }
+            if (StringUtils.isEmpty(appid)) {
+                appid = Configs.getAppid();
+            }
+            if (StringUtils.isEmpty(privateKey)) {
+                privateKey = Configs.getPrivateKey();
+            }
+            if (StringUtils.isEmpty(format)) {
+                format = "json";
+            }
+            if (StringUtils.isEmpty(charset)) {
+                charset = "utf-8";
+            }
+            if (StringUtils.isEmpty(signType)) {
+                signType = Configs.getSignType();
+            }
+            return new AlipayMonitorServiceImpl(this);
+        }
 
-	public MonitorHeartbeatSynResponse heartbeatSyn(AlipayHeartbeatSynRequestBuilder builder) {
-		return heartbeatSyn(builder, null);
-	}
+        public ClientBuilder setAppid(String appid) {
+            this.appid = appid;
+            return this;
+        }
 
-	public MonitorHeartbeatSynResponse heartbeatSyn(AlipayHeartbeatSynRequestBuilder builder, String appAuthToken) {
-		validateBuilder(builder);
+        public ClientBuilder setCharset(String charset) {
+            this.charset = charset;
+            return this;
+        }
 
-		MonitorHeartbeatSynRequest request = new MonitorHeartbeatSynRequest();
-		if (StringUtils.isNotEmpty(appAuthToken)) {
-			request.putOtherTextParam("app_auth_token", appAuthToken);
-		}
+        public ClientBuilder setFormat(String format) {
+            this.format = format;
+            return this;
+        }
 
-		request.setBizContent(builder.toJsonString());
-		this.log.info("heartbeat.sync bizContent:" + request.getBizContent());
+        public ClientBuilder setGatewayUrl(String gatewayUrl) {
+            this.gatewayUrl = gatewayUrl;
+            return this;
+        }
 
-		return (MonitorHeartbeatSynResponse) getResponse(this.client, request);
-	}
+        public ClientBuilder setPrivateKey(String privateKey) {
+            this.privateKey = privateKey;
+            return this;
+        }
+        
+        public ClientBuilder setSignType(String signType) {
+            this.signType = signType;
+            return this;
+        }
+        
+        public String getAppid() {
+            return appid;
+        }
 
-	public static class ClientBuilder {
-		
-		private String gatewayUrl;
-		private String appid;
-		private String privateKey;
-		private String format;
-		private String charset;
+        public String getCharset() {
+            return charset;
+        }
 
-		public AlipayMonitorServiceImpl build() {
-			if (StringUtils.isEmpty(this.gatewayUrl)) {
-				this.gatewayUrl = Configs.getMcloudApiDomain();
-			}
-			if (StringUtils.isEmpty(this.appid)) {
-				this.appid = Configs.getAppid();
-			}
-			if (StringUtils.isEmpty(this.privateKey)) {
-				this.privateKey = Configs.getPrivateKey();
-			}
-			if (StringUtils.isEmpty(this.format)) {
-				this.format = "json";
-			}
-			if (StringUtils.isEmpty(this.charset)) {
-				this.charset = "utf-8";
-			}
-			return new AlipayMonitorServiceImpl(this);
-		}
+        public String getFormat() {
+            return format;
+        }
 
-		public ClientBuilder setAppid(String appid) {
-			this.appid = appid;
-			return this;
-		}
+        public String getGatewayUrl() {
+            return gatewayUrl;
+        }
 
-		public ClientBuilder setCharset(String charset) {
-			this.charset = charset;
-			return this;
-		}
+        public String getPrivateKey() {
+            return privateKey;
+        }
 
-		public ClientBuilder setFormat(String format) {
-			this.format = format;
-			return this;
-		}
+        public String getSignType() {
+            return signType;
+        }
 
-		public ClientBuilder setGatewayUrl(String gatewayUrl) {
-			this.gatewayUrl = gatewayUrl;
-			return this;
-		}
+    }
 
-		public ClientBuilder setPrivateKey(String privateKey) {
-			this.privateKey = privateKey;
-			return this;
-		}
+    public AlipayMonitorServiceImpl(ClientBuilder builder) {
+        if (StringUtils.isEmpty(builder.getGatewayUrl())) {
+            throw new NullPointerException("gatewayUrl should not be NULL!");
+        }
+        if (StringUtils.isEmpty(builder.getAppid())) {
+            throw new NullPointerException("appid should not be NULL!");
+        }
+        if (StringUtils.isEmpty(builder.getPrivateKey())) {
+            throw new NullPointerException("privateKey should not be NULL!");
+        }
+        if (StringUtils.isEmpty(builder.getFormat())) {
+            throw new NullPointerException("format should not be NULL!");
+        }
+        if (StringUtils.isEmpty(builder.getCharset())) {
+            throw new NullPointerException("charset should not be NULL!");
+        }
+        if (StringUtils.isEmpty(builder.getSignType())) {
+            throw new NullPointerException("signType should not be NULL!");
+        }
 
-		public String getAppid() {
-			return this.appid;
-		}
+        // 此处不需要使用alipay public key，因为金融云不产生签名
+        client = new DefaultAlipayClient(builder.getGatewayUrl(), builder.getAppid(), builder.getPrivateKey(),
+                builder.getFormat(), builder.getCharset(), builder.getSignType());
+    }
 
-		public String getCharset() {
-			return this.charset;
-		}
+    public MonitorHeartbeatSynResponse heartbeatSyn(AlipayHeartbeatSynRequestBuilder builder) {
+        validateBuilder(builder);
 
-		public String getFormat() {
-			return this.format;
-		}
+        MonitorHeartbeatSynRequest request = new MonitorHeartbeatSynRequest();
+        request.putOtherTextParam("app_auth_token", builder.getAppAuthToken());
+        request.setBizContent(builder.toJsonString());
+        log.info("heartbeat.sync bizContent:" + request.getBizContent());
 
-		public String getGatewayUrl() {
-			return this.gatewayUrl;
-		}
-
-		public String getPrivateKey() {
-			return this.privateKey;
-		}
-	}
+        return (MonitorHeartbeatSynResponse) getResponse(client, request);
+    }
 }

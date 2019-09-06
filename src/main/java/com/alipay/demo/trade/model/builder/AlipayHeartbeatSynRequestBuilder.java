@@ -1,274 +1,334 @@
 package com.alipay.demo.trade.model.builder;
 
-import com.alipay.demo.trade.model.hb.EquipStatus;
-import com.alipay.demo.trade.model.hb.ExceptionInfo;
-import com.alipay.demo.trade.model.hb.PosTradeInfo;
-import com.alipay.demo.trade.model.hb.Product;
-import com.alipay.demo.trade.model.hb.SysTradeInfo;
-import com.alipay.demo.trade.model.hb.TradeInfo;
-import com.alipay.demo.trade.model.hb.Type;
+import com.alipay.demo.trade.model.hb.*;
 import com.alipay.demo.trade.utils.Utils;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang.StringUtils;
 
+/**
+ * Created by liuyangkly on 16/3/2.
+ */
 public class AlipayHeartbeatSynRequestBuilder extends RequestBuilder {
-	private Product product;
-	private Type type;
 
-	@SerializedName("equipment_id")
-	private String equipmentId;
+    private BizContent bizContent = new BizContent();
 
-	@SerializedName("equipment_status")
-	private EquipStatus equipmentStatus;
-	private String time;
+    @Override
+    public BizContent getBizContent() {
+        return bizContent;
+    }
 
-	@SerializedName("manufacturer_app_id")
-	private String manufacturerPid;
+    @Override
+    public boolean validate() {
+        if (bizContent.product == null) {
+            throw new NullPointerException("product should not be NULL!");
+        }
+        if (bizContent.type == null) {
+            throw new NullPointerException("type should not be NULL!");
+        }
+        if (StringUtils.isEmpty(bizContent.equipmentId)) {
+            throw new NullPointerException("equipment_id should not be NULL!");
+        }
+        if (bizContent.equipmentStatus == null) {
+            throw new NullPointerException("equipment_status should not be NULL!");
+        }
+        if (StringUtils.isEmpty(bizContent.time)) {
+            throw new NullPointerException("time should not be NULL!");
+        }
+        return true;
+    }
 
-	@SerializedName("sys_service_provider_id")
-	private String providerId;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("AlipayHeartbeatSynRequestBuilder{");
+        sb.append("bizContent=").append(bizContent);
+        sb.append(", super=").append(super.toString());
+        sb.append('}');
+        return sb.toString();
+    }
 
-	@SerializedName("store_id")
-	private String storeId;
+    @Override
+    public AlipayHeartbeatSynRequestBuilder setAppAuthToken(String appAuthToken) {
+        return (AlipayHeartbeatSynRequestBuilder) super.setAppAuthToken(appAuthToken);
+    }
 
-	@SerializedName("equipment_position")
-	private String equipmentPosition;
+    @Override
+    public AlipayHeartbeatSynRequestBuilder setNotifyUrl(String notifyUrl) {
+        return (AlipayHeartbeatSynRequestBuilder) super.setNotifyUrl(notifyUrl);
+    }
 
-	@SerializedName("bbs_position")
-	private String bbsPosition;
+    public String getMac() {
+        return bizContent.mac;
+    }
 
-	@SerializedName("network_status")
-	private String networkStatus;
+    public AlipayHeartbeatSynRequestBuilder setMac(String mac) {
+        bizContent.mac = mac;
+        return this;
+    }
 
-	@SerializedName("network_type")
-	private String networkType;
-	private String battery;
+    public String getNetworkType() {
+        return bizContent.networkType;
+    }
 
-	@SerializedName("wifi_mac")
-	private String wifiMac;
+    public AlipayHeartbeatSynRequestBuilder setNetworkType(String networkType) {
+        bizContent.networkType = networkType;
+        return this;
+    }
 
-	@SerializedName("wifi_name")
-	private String wifiName;
-	private String ip;
-	private String mac;
+    public String getBattery() {
+        return bizContent.battery;
+    }
 
-	@SerializedName("trade_info")
-	private List<TradeInfo> tradeInfoList;
+    public AlipayHeartbeatSynRequestBuilder setBattery(String battery) {
+        bizContent.battery = battery;
+        return this;
+    }
 
-	@SerializedName("exception_info")
-	private List<ExceptionInfo> exceptionInfoList;
+    public String getWifiMac() {
+        return bizContent.wifiMac;
+    }
 
-	@SerializedName("extend_info")
-	private Map<String, Object> extendInfo;
+    public AlipayHeartbeatSynRequestBuilder setWifiMac(String wifiMac) {
+        bizContent.wifiMac = wifiMac;
+        return this;
+    }
 
-	public boolean validate() {
-		if (this.product == null) {
-			throw new NullPointerException("product should not be NULL!");
-		}
-		if (this.type == null) {
-			throw new NullPointerException("type should not be NULL!");
-		}
-		if (StringUtils.isEmpty(this.equipmentId)) {
-			throw new NullPointerException("equipment_id should not be NULL!");
-		}
-		if (this.equipmentStatus == null) {
-			throw new NullPointerException("equipment_status should not be NULL!");
-		}
-		if (StringUtils.isEmpty(this.time)) {
-			throw new NullPointerException("time should not be NULL!");
-		}
-		return true;
-	}
+    public String getWifiName() {
+        return bizContent.wifiName;
+    }
 
-	public String getMac() {
-		return this.mac;
-	}
+    public AlipayHeartbeatSynRequestBuilder setWifiName(String wifiName) {
+        bizContent.wifiName = wifiName;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setMac(String mac) {
-		this.mac = mac;
-		return this;
-	}
+    public String getNetworkStatus() {
+        return bizContent.networkStatus;
+    }
 
-	public String getNetworkType() {
-		return this.networkType;
-	}
+    public AlipayHeartbeatSynRequestBuilder setNetworkStatus(String networkStatus) {
+        bizContent.networkStatus = networkStatus;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setNetworkType(String networkType) {
-		this.networkType = networkType;
-		return this;
-	}
+    public String getBbsPosition() {
+        return bizContent.bbsPosition;
+    }
 
-	public String getBattery() {
-		return this.battery;
-	}
+    public AlipayHeartbeatSynRequestBuilder setBbsPosition(String bbsPosition) {
+        bizContent.bbsPosition = bbsPosition;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setBattery(String battery) {
-		this.battery = battery;
-		return this;
-	}
+    public String getManufacturerPid() {
+        return bizContent.manufacturerPid;
+    }
 
-	public String getWifiMac() {
-		return this.wifiMac;
-	}
+    public AlipayHeartbeatSynRequestBuilder setManufacturerPid(String manufacturerPid) {
+        bizContent.manufacturerPid = manufacturerPid;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setWifiMac(String wifiMac) {
-		this.wifiMac = wifiMac;
-		return this;
-	}
+    public String getProviderId() {
+        return bizContent.providerId;
+    }
 
-	public String getWifiName() {
-		return this.wifiName;
-	}
+    public AlipayHeartbeatSynRequestBuilder setProviderId(String providerId) {
+        bizContent.providerId = providerId;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setWifiName(String wifiName) {
-		this.wifiName = wifiName;
-		return this;
-	}
+    public String getEquipmentId() {
+        return bizContent.equipmentId;
+    }
 
-	public String getNetworkStatus() {
-		return this.networkStatus;
-	}
+    public AlipayHeartbeatSynRequestBuilder setEquipmentId(String equipmentId) {
+        bizContent.equipmentId = equipmentId;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setNetworkStatus(String networkStatus) {
-		this.networkStatus = networkStatus;
-		return this;
-	}
+    public String getEquipmentPosition() {
+        return bizContent.equipmentPosition;
+    }
 
-	public String getBbsPosition() {
-		return this.bbsPosition;
-	}
+    public AlipayHeartbeatSynRequestBuilder setEquipmentPosition(String equipmentPosition) {
+        bizContent.equipmentPosition = equipmentPosition;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setBbsPosition(String bbsPosition) {
-		this.bbsPosition = bbsPosition;
-		return this;
-	}
+    public EquipStatus getEquipmentStatus() {
+        return bizContent.equipmentStatus;
+    }
 
-	public String getManufacturerPid() {
-		return this.manufacturerPid;
-	}
+    public AlipayHeartbeatSynRequestBuilder setEquipmentStatus(EquipStatus equipmentStatus) {
+        bizContent.equipmentStatus = equipmentStatus;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setManufacturerPid(String manufacturerPid) {
-		this.manufacturerPid = manufacturerPid;
-		return this;
-	}
+    public List<ExceptionInfo> getExceptionInfoList() {
+        return bizContent.exceptionInfoList;
+    }
 
-	public String getProviderId() {
-		return this.providerId;
-	}
+    public AlipayHeartbeatSynRequestBuilder setExceptionInfoList(List<ExceptionInfo> exceptionInfoList) {
+        bizContent.exceptionInfoList = exceptionInfoList;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setProviderId(String providerId) {
-		this.providerId = providerId;
-		return this;
-	}
+    public Map<String, Object> getExtendInfo() {
+        return bizContent.extendInfo;
+    }
 
-	public String getEquipmentId() {
-		return this.equipmentId;
-	}
+    public AlipayHeartbeatSynRequestBuilder setExtendInfo(Map<String, Object> extendInfo) {
+        bizContent.extendInfo = extendInfo;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setEquipmentId(String equipmentId) {
-		this.equipmentId = equipmentId;
-		return this;
-	}
+    public String getIp() {
+        return bizContent.ip;
+    }
 
-	public String getEquipmentPosition() {
-		return this.equipmentPosition;
-	}
+    public AlipayHeartbeatSynRequestBuilder setIp(String ip) {
+        bizContent.ip = ip;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setEquipmentPosition(String equipmentPosition) {
-		this.equipmentPosition = equipmentPosition;
-		return this;
-	}
+    public Product getProduct() {
+        return bizContent.product;
+    }
 
-	public EquipStatus getEquipmentStatus() {
-		return this.equipmentStatus;
-	}
+    public AlipayHeartbeatSynRequestBuilder setProduct(Product product) {
+        bizContent.product = product;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setEquipmentStatus(EquipStatus equipmentStatus) {
-		this.equipmentStatus = equipmentStatus;
-		return this;
-	}
+    public String getStoreId() {
+        return bizContent.storeId;
+    }
 
-	public List<ExceptionInfo> getExceptionInfoList() {
-		return this.exceptionInfoList;
-	}
+    public AlipayHeartbeatSynRequestBuilder setStoreId(String storeId) {
+        bizContent.storeId = storeId;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setExceptionInfoList(List<ExceptionInfo> exceptionInfoList) {
-		this.exceptionInfoList = exceptionInfoList;
-		return this;
-	}
+    public String getTime() {
+        return bizContent.time;
+    }
 
-	public Map<String, Object> getExtendInfo() {
-		return this.extendInfo;
-	}
+    public AlipayHeartbeatSynRequestBuilder setTime(String time) {
+        bizContent.time = time;
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setExtendInfo(Map<String, Object> extendInfo) {
-		this.extendInfo = extendInfo;
-		return this;
-	}
+    public List<TradeInfo> getTradeInfoList() {
+        return bizContent.tradeInfoList;
+    }
 
-	public String getIp() {
-		return this.ip;
-	}
+    public AlipayHeartbeatSynRequestBuilder setSysTradeInfoList(List<SysTradeInfo> sysTradeInfoList) {
+        if (Utils.isListNotEmpty(sysTradeInfoList)) {
+            bizContent.tradeInfoList = new ArrayList<TradeInfo>(sysTradeInfoList);
+        }
+        return this;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setIp(String ip) {
-		this.ip = ip;
-		return this;
-	}
+    public AlipayHeartbeatSynRequestBuilder setPosTradeInfoList(List<PosTradeInfo> posTradeInfoList) {
+        if (Utils.isListNotEmpty(posTradeInfoList)) {
+            bizContent.tradeInfoList = new ArrayList<TradeInfo>(posTradeInfoList);
+        }
+        return this;
+    }
 
-	public Product getProduct() {
-		return this.product;
-	}
+    public Type getType() {
+        return bizContent.type;
+    }
 
-	public AlipayHeartbeatSynRequestBuilder setProduct(Product product) {
-		this.product = product;
-		return this;
-	}
+    public AlipayHeartbeatSynRequestBuilder setType(Type type) {
+        bizContent.type = type;
+        return this;
+    }
 
-	public String getStoreId() {
-		return this.storeId;
-	}
+    public static class BizContent {
+        private Product product;
 
-	public AlipayHeartbeatSynRequestBuilder setStoreId(String storeId) {
-		this.storeId = storeId;
-		return this;
-	}
+        private Type type;
 
-	public String getTime() {
-		return this.time;
-	}
+        @SerializedName("equipment_id")
+        private String equipmentId;
 
-	public AlipayHeartbeatSynRequestBuilder setTime(String time) {
-		this.time = time;
-		return this;
-	}
+        @SerializedName("equipment_status")
+        private EquipStatus equipmentStatus;
 
-	public List<TradeInfo> getTradeInfoList() {
-		return this.tradeInfoList;
-	}
+        private String time;
 
-	public AlipayHeartbeatSynRequestBuilder setSysTradeInfoList(List<SysTradeInfo> sysTradeInfoList) {
-		if (Utils.isListNotEmpty(sysTradeInfoList)) {
-			this.tradeInfoList = new ArrayList<TradeInfo>(sysTradeInfoList);
-		}
-		return this;
-	}
+        @SerializedName("manufacturer_app_id")
+        private String manufacturerPid;
 
-	public AlipayHeartbeatSynRequestBuilder setPosTradeInfoList(List<PosTradeInfo> posTradeInfoList) {
-		if (Utils.isListNotEmpty(posTradeInfoList)) {
-			this.tradeInfoList = new ArrayList<TradeInfo>(posTradeInfoList);
-		}
-		return this;
-	}
+        @SerializedName("sys_service_provider_id")
+        private String providerId;
 
-	public Type getType() {
-		return this.type;
-	}
+        @SerializedName("store_id")
+        private String storeId;
 
-	public AlipayHeartbeatSynRequestBuilder setType(Type type) {
-		this.type = type;
-		return this;
-	}
+        @SerializedName("equipment_position")
+        private String equipmentPosition;
+
+        @SerializedName("bbs_position")
+        private String bbsPosition;
+
+        @SerializedName("network_status")
+        private String networkStatus;
+
+        @SerializedName("network_type")
+        private String networkType;
+
+        private String battery;
+
+        @SerializedName("wifi_mac")
+        private String wifiMac;
+
+        @SerializedName("wifi_name")
+        private String wifiName;
+
+        private String ip;
+
+        private String mac;
+
+        @SerializedName("trade_info")
+        private List<TradeInfo> tradeInfoList;
+
+        @SerializedName("exception_info")
+        private List<ExceptionInfo> exceptionInfoList;
+
+        @SerializedName("extend_info")
+        private Map<String, Object> extendInfo;
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("BizContent{");
+            sb.append("product=").append(product);
+            sb.append(", type=").append(type);
+            sb.append(", equipmentId='").append(equipmentId).append('\'');
+            sb.append(", equipmentStatus=").append(equipmentStatus);
+            sb.append(", time='").append(time).append('\'');
+            sb.append(", manufacturerPid='").append(manufacturerPid).append('\'');
+            sb.append(", providerId='").append(providerId).append('\'');
+            sb.append(", storeId='").append(storeId).append('\'');
+            sb.append(", equipmentPosition='").append(equipmentPosition).append('\'');
+            sb.append(", bbsPosition='").append(bbsPosition).append('\'');
+            sb.append(", networkStatus='").append(networkStatus).append('\'');
+            sb.append(", networkType='").append(networkType).append('\'');
+            sb.append(", battery='").append(battery).append('\'');
+            sb.append(", wifiMac='").append(wifiMac).append('\'');
+            sb.append(", wifiName='").append(wifiName).append('\'');
+            sb.append(", ip='").append(ip).append('\'');
+            sb.append(", mac='").append(mac).append('\'');
+            sb.append(", tradeInfoList=").append(tradeInfoList);
+            sb.append(", exceptionInfoList=").append(exceptionInfoList);
+            sb.append(", extendInfo=").append(extendInfo);
+            sb.append('}');
+            return sb.toString();
+        }
+    }
 }
